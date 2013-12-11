@@ -24,6 +24,11 @@
     </developer>
   </developers>
 
+  <scm>
+    <connection>scm:git:ssh://github.com/jenkinsci/pom2config-plugin.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/jenkinsci/pom2config-plugin.git</developerConnection>
+    <url>https://github.com/jenkinsci/pom2config-plugin</url>
+  </scm>
 
   <dependencies>
    	<dependency>
