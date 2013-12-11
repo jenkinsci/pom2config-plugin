@@ -1,0 +1,45 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+
+  <l:layout title="Pom2Config Plugin">
+    <l:side-panel>
+      <l:tasks>
+        <l:task icon="${resURL}/plugin/pom2config/icons/up-32x32.png" href="${rootURL}/" title="${%Back to Jenkins}" />
+      </l:tasks>
+    </l:side-panel>
+    <l:main-panel>
+      <h1>Pom2Config</h1>
+      <h2>${%Get pom}</h2>
+
+      <f:form action="getPom" method="post" name="getPom">
+
+		<j:set var="isPomAvailable" value="${it.isPomInWorkspace()}" />
+
+		<j:choose>
+		  <j:when test="${isPomAvailable}">
+            <f:radioBlock name="fromWhere" value="useExisting" title="${%Use existing pom file}" checked="true"/>
+          </j:when>
+          <j:otherwise>
+			<f:nested><i>No pom file found in workspace. Maybe you have to start a build first.</i></f:nested>
+          </j:otherwise>
+		</j:choose>
+
+        <f:radioBlock name="fromWhere" value="fromUrl" title="${%Get it from url}" checked="${!isPomAvailable}">
+	      <f:entry title="${%Location: }" field="location">
+    	    <f:textbox/>
+          </f:entry>
+        </f:radioBlock>
+
+        <f:radioBlock name="fromWhere" value="fromUpload" title="${%Upload now}">
+	      <f:entry title="${%Location: }" field="upload">
+            <input type="file" name="file" jsonAware="yes"/>
+          </f:entry>
+        </f:radioBlock>
+
+        <f:entry>
+	      <f:submit value="${%Submit}" name="SubmitButton"/>
+        </f:entry>
+      </f:form>
+
+    </l:main-panel>
+  </l:layout>
+</j:jelly>

@@ -1,0 +1,68 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+
+  <l:layout title="Pom2Config Plugin">
+    <l:side-panel>
+      <l:tasks>
+        <l:task icon="${resURL}/plugin/pom2config/icons/up-32x32.png" href="${rootURL}/" title="${%Back to Jenkins}" />
+      </l:tasks>
+    </l:side-panel>
+
+    <l:main-panel>
+      <h1>Pom2Config</h1>
+
+      <f:form action="setDetails" method="post" name="setDetails">
+		<f:entry>
+			<h2>Config values:</h2>
+		 	<table>
+ 				<j:forEach items="${it.getPom2ConfigHandler()}" var="handler">
+	        		<j:forEach items="${handler.getPomValues()}" var="detail">
+						<j:choose>
+							<j:when test="${detail.getIsActive()}">
+			          			<f:optionalBlock title="${detail.getName()}" name="${detail.getName()}" checked="${!detail.getNewEntry().trim().isEmpty()}">
+			            			<f:entry title="Config entry" >
+			              				<j:choose>
+			 			    				<j:when test="${detail.getOldEntrys().size() > 1}">
+			 			      					<select name="configEntry">
+			                    				<j:forEach items="${detail.getOldEntrys()}" var="url">
+			                      					<f:option value="${url}">${url}</f:option>
+			                    				</j:forEach>
+			 			     					</select>
+			 			    				</j:when>
+			 			    				<j:otherwise>
+			                  					<f:readOnlyTextbox name="configEntry" value="${detail.getOldEntrys().get(0)}" />
+			                				</j:otherwise>
+			              				</j:choose>
+			            			</f:entry>
+			            			<f:entry title="Pom entry" >
+			              				<f:textarea name="pomEntry" value="${detail.getNewEntry()}" />
+			            			</f:entry>
+			          			</f:optionalBlock>
+		      	    		</j:when>
+				    		<j:otherwise>
+				      			<f:entry title="${detail.getName()}">
+		              				<f:readOnlyTextbox name="Plugin nicht geladen" value="Plugin is not activated in the job configuration!" />
+		              			</f:entry>
+		            		</j:otherwise>
+		         		</j:choose>
+	   	     		</j:forEach>
+	        	</j:forEach>
+			</table>
+
+			<j:choose>
+				<j:when test="${! it.getNotLoadedHandler().isEmpty()}">
+					<h2>Plugins which are supported but not loaded:</h2>
+						<j:forEach items="${it.getNotLoadedHandler()}" var="notLoaded">
+							${notLoaded.getName()} <br />
+			    		</j:forEach>
+				</j:when>
+			</j:choose>
+	  	</f:entry>
+
+	  	<f:entry>
+    		<f:submit value="${%Submit}" name="Submit" style="margin-top: 40px;"/>
+   	  	</f:entry>
+     </f:form>
+
+    </l:main-panel>
+  </l:layout>
+</j:jelly>

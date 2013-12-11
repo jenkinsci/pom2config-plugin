@@ -1,0 +1,22 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+
+  <l:layout title="Pom2Config Plugin">
+    <l:side-panel>
+      <l:tasks>
+        <l:task icon="${resURL}/plugin/pom2config/icons/up-32x32.png" href="${rootURL}/" title="${%Back to Jenkins}" />
+      </l:tasks>
+    </l:side-panel>
+
+    <l:main-panel>
+      <h1>Pom2Config</h1>
+
+      <j:forEach var="message" items="${it.messages}">
+        ${message} <br />
+      </j:forEach>
+
+    </l:main-panel>
+  </l:layout>
+</j:jelly>
+
+
+
